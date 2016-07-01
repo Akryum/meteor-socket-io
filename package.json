@@ -1,0 +1,17 @@
+{
+  "name": "socket-io",
+  "private": true,
+  "scripts": {
+    "start": "meteor run"
+  },
+  "dependencies": {
+    "bufferutil": "^1.2.1",
+    "meteor-node-stubs": "~0.2.0",
+    "utf-8-validate": "^1.2.1"
+  },
+  "devDependencies": {
+    "meteor-node-stubs": "^0.2.3",
+    "socket.io": "^1.4.8",
+    "socket.io-client": "^1.4.8"
+  }
+}
