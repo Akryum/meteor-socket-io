@@ -30,31 +30,33 @@ if (!Response.prototype.setEncoding) {
 }
 
 // Connection
-const PORT = 8080;
-let socket = require('socket.io-client')(`http://localhost:${PORT}`);
+Meteor.startup(() => {
+  const PORT = window.socketPort || 3003;
+  let socket = require('socket.io-client')(`http://localhost:${PORT}`);
 
-socket.on('connect', function() {
-  console.log('Client connected');
-});
-socket.on('disconnect', function() {
-  console.log('Client disconnected');
-});
+  socket.on('connect', function() {
+    console.log('Client connected');
+  });
+  socket.on('disconnect', function() {
+    console.log('Client disconnected');
+  });
 
-// Get counter updates from server
-let serverCounter = counter.get();
-socket.on('counter', function(value) {
-  console.log(`counter changed on server: ${value}`);
-  if (serverCounter !== value) {
-    serverCounter = value;
-    counter.set(value);
-  }
-});
+  // Get counter updates from server
+  let serverCounter = counter.get();
+  socket.on('counter', function(value) {
+    console.log(`counter changed on server: ${value}`);
+    if (serverCounter !== value) {
+      serverCounter = value;
+      counter.set(value);
+    }
+  });
 
-// Update counter from client to server
-Tracker.autorun(() => {
-  const c = counter.get();
-  if (c !== serverCounter) {
-    console.log(c);
-    socket.emit('counter', c);
-  }
+  // Update counter from client to server
+  Tracker.autorun(() => {
+    const c = counter.get();
+    if (c !== serverCounter) {
+      console.log(c);
+      socket.emit('counter', c);
+    }
+  });
 });
